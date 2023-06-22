@@ -37,7 +37,6 @@ const SignUpModal = ({ open, handleModal }) => {
           userName: userNameValue,
           email: emailValue,
           password: passwordValue,
-          redirect: false,
           callbackUrl : "http://localhost:3000"
         });
         if (res?.error) {

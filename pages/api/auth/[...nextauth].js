@@ -1,7 +1,7 @@
 import  NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
-import { signIn } from "next-auth/react";
+
 
 export default NextAuth ({
     session: {
@@ -9,49 +9,48 @@ export default NextAuth ({
     },
     providers : [
        CredentialsProvider({
+            id : "credentials",
             name: "credentials",
+            credentials : {
+              username : {type : "text"},
+              email : {type : "email"},
+              password : {type : "password"}
+            },
             authorize: async (credentials) => {
               const {userName , email, password } = credentials;
-              if(email && password && userName) {
-                return {userName , email}
+              if(email == "ahmedrashad13281@gmail.com" && password == "123456") {
+                return credentials
               }else{
-                return null;
+                throw new Error("Credentials Error")
               }
             },
         }),
 
       GitHubProvider ({
-            name : "github",
             clientId : process.env.GITHUB_ID,
-            clientSecret : process.env.GITHUB_SECRET
+            clientSecret : process.env.GITHUB_SECERT,
+            // authorization : {params : {redirect_uri : "http://localhost:3000" , scope : "user"}}
         })
     ],
     callbacks: {
-      async jwt({ token, user }) {
-        // Persist the OAuth access_token and or the user id to the token right after signin
-        if (user) {
-          token.accessToken = user.access_token
-          token.id = user?.id
-        }
-        return token
+      async redirect ({url , baseUrl}) {
+        return url
       },
-      async session({ session, token, userName }) {
-        console.log(userName)
-        // Send properties to the client, like an access_token and user id from a provider.
-        session.accessToken = token.accessToken
-        session.user.id = token.id
-        console.log(session)
-        return session
+      async signIn ({user}) {
+        return true
       }
+
     },
-    // secret : "test",
+
+    secret : "test",
+
     jwt : {
       secret : "test",
-      encryption : true,
-    }
+    },
 
     // pages : {
-    //   signIn : '/auth/LoginModal'
+    //   signIn : '/',
+    //   signOut : "/"
     // }
 })
 

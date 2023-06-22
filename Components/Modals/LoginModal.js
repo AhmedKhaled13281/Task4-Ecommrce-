@@ -36,19 +36,30 @@ const LoginModal = ({ open, handleModal }) => {
     const emailValue = emailRef.current.value;
     const passwordValue = passwordRef.current.value;
 
-
-
+    const res = await signIn("credentials", {
+      email: emailValue,
+      password: passwordValue,
+      callbackUrl : "http://localhost:3000"
+    });
+    if (res?.error) {
+      // Handle login error
+      console.log(res.error);
+    } else {
+      // Login successful
+      console.log(res);
+      handleModal();
+    }
   };
   const handleSignInWithGitHub = async () => {
 
    const res = signIn("github" , {callbackUrl : "http://localhost:3000"})
-   if (res?.error) {
-    // Handle login error
-    console.log(res.error);
-  } else {
-    // Login successful
-    console.log(res);
-  }
+    if (res?.error) {
+      // Handle login error
+      console.log(res?.error);
+    } else {
+      // Login successful
+      console.log(res);
+    }
   };
   
   return (
