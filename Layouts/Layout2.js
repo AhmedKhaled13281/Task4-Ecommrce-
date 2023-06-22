@@ -1,19 +1,32 @@
-import React from 'react'
+import React , {useEffect, useState} from 'react'
 import Header from '@/Components/Header'
-import { useSession , getSession} from 'next-auth/react';
+import { getSession} from 'next-auth/react';
 import { useRouter } from 'next/router';
 const Layout2 = ({children}) => {
   const router = useRouter()
-  const session = useSession()
+  const [loading , setLoading] = useState(true)
+
+  useEffect(() => {
+    const secure = async () => {
+      const session = await getSession()
+      console.log(session)
+      if(!session){
+        router.push("/")
+      }else {
+        setLoading(false)
+      }
+    }
+    secure()
+  } ,[router])
 
   return (
     <>
-  {session?.data ? (      <div>
+      {loading ? (<h1>Loading ...</h1>) : (     <div>
       <Header />
       <div>
         {children}
       </div>
-    </div>) : router.push("/")}
+    </div>)}
     </>
   );
 }

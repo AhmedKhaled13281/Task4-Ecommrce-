@@ -32,12 +32,12 @@ const Header = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/">E-Commerce</Link>
           </Typography>
-          <Link href={session?.data ? "/UserSettings" : "/"}>
+          <Link href= "/usersettings" >
             <Button color="inherit">
               User Settings
             </Button>
           </Link>
-          <Link href="/Products">
+          <Link href="/products">
             <Button color="inherit">
               Products
             </Button>
@@ -62,7 +62,7 @@ const Header = () => {
               SignOut
             </Button>
           )}
-          <Link href={session?.data ? "/Cart" : "/"}>
+          <Link href= "/cart" >
             <Button color="inherit">
               <Badge badgeContent={cartLength} color="primary">
                 <ShoppingCartIcon />
